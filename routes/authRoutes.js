@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const sendEmail = require('../utils/sendEmail');
 const Transaction = require('../models/Transaction'); // Adjust path if your model file is named differently
-const authMiddleware = require('../middleware/auth');
+const authMiddleware = require('../middleware/authMiddleware'); // The Bouncer for protected routes
 // 1. REGISTER A NEW USER
 router.post('/register', async (req, res) => {
     try {

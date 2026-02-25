@@ -14,7 +14,15 @@ const userSchema = new mongoose.Schema({
     password: { 
         type: String, 
         required: true 
-    }
+    },
+    resetOtp: { 
+        type: String,
+         default: null 
+        },
+    otpExpiry: {
+         type: Date,
+          default: null 
+        }
 }, { timestamps: true });
 
 // ENCRYPTION ENGINE: Automatically hash the password before saving

@@ -62,6 +62,7 @@ router.post('/login', async (req, res) => {
 // 1. GENERATE OTP & SEND EMAIL
 // ==========================================
 router.post('/forgot-password', async (req, res) => {
+    console.log('Received forgot-password request');
     try {
         const { email } = req.body;
         const user = await User.findOne({ email });
@@ -122,12 +123,12 @@ router.post('/reset-password', async (req, res) => {
     try {
         const { email, newPassword } = req.body;
         const user = await User.findOne({ email });
-        const bcrypt = require('bcryptjs');
+        
 
         if (!user) return res.status(404).json({ message: "User not found." });
 
-         user.password = await bcrypt.hash(newPassword, 10);
-
+       
+            user.password = newPassword;
         // SECURE THE VAULT: Wipe the OTP data so it cannot be reused
         user.resetOtp = null;
         user.otpExpiry = null;

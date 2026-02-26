@@ -78,19 +78,18 @@ router.post('/forgot-password', async (req, res) => {
         user.otpExpiry = Date.now() + 10 * 60 * 1000; 
         await user.save();
 
-        // Fire the email
-        const message = `Your password reset code is ${otp}. It will expire in 10 minutes. Do not share this code with anyone.`;
+       
         await sendEmail({
             email: user.email,
             subject: 'FinanceWise - Password Reset Code',
-            message: message
+            message: `Your password reset OTP is: ${otp}\n\nThis OTP will expire in 10 minutes.\nDo not share this code with anyone.`
+        
         });
 
         res.status(200).json({ message: "OTP sent to email successfully." });
     } catch (error) {
-        console.error("🚨 RAW EMAIL ERROR:", error);
-        res.status(500).json({ message: "Server error sending email." ,
-            details: error.message});
+        console.error("Forgot Password Error:", error);
+        res.status(500).json({ message: "Server error sending email." });
     }
 });
 

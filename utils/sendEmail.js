@@ -1,29 +1,21 @@
-const { Resend } = require('resend');
+// utils/sendEmail.js
+const nodemailer = require('nodemailer');
 
-// Initialize Resend with your API Key
-const resend = new Resend(process.env.RESEND_API_KEY);
-
-const sendEmail = async (options) => {
-    try {
-        console.log(`🚀 Sending API request to Resend for: ${options.email}`);
-
-        const { data, error } = await resend.emails.send({
-            from: 'FinanceWise Security <onboarding@resend.dev>',
-            to: options.email,
-            subject: options.subject,
-            text: options.message,
-        });
-
-        if (error) {
-            console.error("🚨 RESEND API ERROR:", error);
-            throw new Error(error.message);
-        }
-
-        console.log("✅ EMAIL SENT VIA API:", data.id);
-    } catch (err) {
-        console.error("🚨 FATAL EMAIL CRASH:", err);
-        throw err; // Send this back to authRoutes.js
+const transporter = nodemailer.createTransport({
+    host: "smtp.resend.com",
+    port: 587,
+    secure: false,
+    auth: {
+        user: "resend",
+        pass: process.env.RESEND_API_KEY
     }
-};
+});
 
-module.exports = sendEmail;
+module.exports = async (options) => {
+    await transporter.sendMail({
+        from: `"FinanceWise" <${process.env.FROM_EMAIL}>`,
+        to: options.email,
+        subject: options.subject,
+        text: options.message
+    });
+};

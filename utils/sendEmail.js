@@ -3,23 +3,28 @@ const nodemailer = require('nodemailer');
 const sendEmail = async (options) => {
     // 1. Create the Transporter (The Engine connecting to Google)
     const transporter = nodemailer.createTransport({
-        service: 'Gmail',
+       host: "smtp.resend.com",
+        port: 587,
+        secure: false,
         auth: {
-            user: process.env.EMAIL_USER,
-            pass: process.env.EMAIL_PASS,
+            user: "resend",
+            pass: process.env.RESEND_API_KEY,
         },
     });
 
     // 2. Define the Email Options (The Payload)
     const mailOptions = {
-        from: `FinanceWise Security <${process.env.EMAIL_USER}>`,
-        to: options.email,
+        
+        from: 'FinanceWise Security <onboarding@resend.dev>', 
+        
+        to: options.email, // This MUST be the exact email you registered your Resend account with
         subject: options.subject,
-        text: options.message, // The actual OTP message
+        text: options.message, 
     };
 
-    // 3. Fire the Email
+    console.log(`🔵 Attempting to send OTP via Resend to ${options.email}...`);
     await transporter.sendMail(mailOptions);
+    console.log("✅ SUCCESS: Resend accepted the email!");
 };
 
 module.exports = sendEmail;

@@ -88,8 +88,9 @@ router.post('/forgot-password', async (req, res) => {
 
         res.status(200).json({ message: "OTP sent to email successfully." });
     } catch (error) {
-        console.error("Forgot Password Error:", error);
-        res.status(500).json({ message: "Server error sending email." });
+        console.error("🚨 RAW EMAIL ERROR:", error);
+        res.status(500).json({ message: "Server error sending email." ,
+            details: error.message});
     }
 });
 
@@ -136,7 +137,8 @@ router.post('/reset-password', async (req, res) => {
         res.status(200).json({ message: "Password reset successfully." });
     } catch (error) {
         console.error("Reset Password Error:", error);
-        res.status(500).json({ message: "Server error resetting password." });
+        res.status(500).json({ message: "Server error sending email."
+        });
     }
 });
 // ==========================================

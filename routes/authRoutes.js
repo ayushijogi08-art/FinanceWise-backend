@@ -126,8 +126,7 @@ router.post('/reset-password', async (req, res) => {
 
         if (!user) return res.status(404).json({ message: "User not found." });
 
-         const salt = await bcrypt.genSalt(10);
-        user.password = await bcrypt.hash(newPassword, salt);
+         user.password = newPassword;
 
         // SECURE THE VAULT: Wipe the OTP data so it cannot be reused
         user.resetOtp = null;

@@ -1,30 +1,29 @@
-const nodemailer = require('nodemailer');
+const { Resend } = require('resend');
+
+// Initialize Resend with your API Key
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 const sendEmail = async (options) => {
-    // 1. Create the Transporter (The Engine connecting to Google)
-    const transporter = nodemailer.createTransport({
-       host: "smtp.resend.com",
-        port: 587,
-        secure: false,
-        auth: {
-            user: "resend",
-            pass: process.env.RESEND_API_KEY,
-        },
-    });
+    try {
+        console.log(`🚀 Sending API request to Resend for: ${options.email}`);
 
-    // 2. Define the Email Options (The Payload)
-    const mailOptions = {
-        
-        from: 'FinanceWise Security <onboarding@resend.dev>', 
-        
-        to: options.email, // This MUST be the exact email you registered your Resend account with
-        subject: options.subject,
-        text: options.message, 
-    };
+        const { data, error } = await resend.emails.send({
+            from: 'FinanceWise Security <onboarding@resend.dev>',
+            to: options.email,
+            subject: options.subject,
+            text: options.message,
+        });
 
-    console.log(`🔵 Attempting to send OTP via Resend to ${options.email}...`);
-    await transporter.sendMail(mailOptions);
-    console.log("✅ SUCCESS: Resend accepted the email!");
+        if (error) {
+            console.error("🚨 RESEND API ERROR:", error);
+            throw new Error(error.message);
+        }
+
+        console.log("✅ EMAIL SENT VIA API:", data.id);
+    } catch (err) {
+        console.error("🚨 FATAL EMAIL CRASH:", err);
+        throw err; // Send this back to authRoutes.js
+    }
 };
 
 module.exports = sendEmail;

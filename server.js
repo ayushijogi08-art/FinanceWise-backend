@@ -8,8 +8,12 @@ require('dotenv').config();
 const app = express();
 
 // Middleware
+
+app.use(cors({ origin: '*',  // Allow all origins for testing (change to your app's domain later for security, e.g., 'http://localhost:3000' or your Flutter web URL)
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],  // Include OPTIONS for preflight
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
 app.use(express.json());
-app.use(cors());
 const transactionRoutes = require('./routes/transactionRoutes');
 const authRoutes = require('./routes/authRoutes');
 const goalRoutes = require('./routes/goalRoutes');

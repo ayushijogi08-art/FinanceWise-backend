@@ -7,7 +7,10 @@ const auth = require('../middleware/authMiddleware'); // The Bouncer
 // THE FIX: Notice 'auth' is now physically guarding the route
 router.get('/', auth, async (req, res) => {
     try {
-        const transactions = await Transaction.find({ user: req.user.id }).sort({ date: -1 });
+        const page = parseInt(req.query.page) || 1;
+         const limit = parseInt(req.query.limit) || 20;
+        const skip = (page - 1) * limit;
+        const transactions = await Transaction.find({ user: req.user.id }).sort({ date: -1 }).skip(skip).limit(limit);
         res.status(200).json(transactions);
     } catch (err) {
         res.status(500).json({ error: err.message });

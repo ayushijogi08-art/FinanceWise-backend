@@ -31,11 +31,17 @@ FinanceWise is a secure, cross-platform financial tracking system built to solve
 To run this project locally, you will need to add the following environment variables to your backend `.env` file:
 
 `PORT` = 5000
+
 `MONGO_URI` = < MongoDB Connection String>
+
 `JWT_SECRET` = < Secure JWT Key>
+
 `EMAILJS_SERVICE_ID` = < EmailJS Service ID>
+
 `EMAILJS_TEMPLATE_ID` = < EmailJS Template ID>
+
 `EMAILJS_PUBLIC_KEY` = < EmailJS Public Key>
+
 `EMAILJS_PRIVATE_KEY` = < EmailJS Private Key>
 
 ## 💻 Local Setup Instructions
